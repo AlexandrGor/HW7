@@ -1,5 +1,6 @@
-
+import pathlib
 def read_recipes(filename):
+    cook_book = {}
     with open(filename, 'rt', encoding = 'utf-8') as file:
         new_dish = True
         amount = False
@@ -27,6 +28,7 @@ def read_recipes(filename):
             else:
                 new_dish = True
                 ingredients = False
+    return cook_book
 
 def get_shop_list_by_dishes(dishes, person_count):
     shop_list = {}
@@ -42,9 +44,29 @@ def get_shop_list_by_dishes(dishes, person_count):
         else:
             print(f"Блюдо {dish} отсутсвует в книге рецептов")
     return shop_list
-cook_book = {}
-read_recipes('recipes.txt')
+
+cook_book = read_recipes('recipes.txt')
 print(cook_book)
 
-shop_list = get_shop_list_by_dishes(['Запеченный картофель', 'Омлет'], 2)
-print(shop_list)
+print(f"\n{get_shop_list_by_dishes(['Запеченный картофель', 'Омлет'], 2)}")
+
+def file_lenghs(file):
+    len = 0
+    f = open(file, 'r', encoding = 'utf-8')
+    for line in f:
+        len += 1
+    f.close()
+    return len
+dict_files_len = {}
+for filename in pathlib.Path('files').iterdir():
+    dict_files_len.update({filename.name: file_lenghs(filename)})
+sorted_list_of_files_by_len = sorted(dict_files_len, key=dict_files_len.get)
+with open('result.txt', 'w', encoding = 'utf-8') as f:
+    for file in sorted_list_of_files_by_len:
+        f.write(file + '\n')
+        f.write(str(dict_files_len[file]) + '\n')
+        with open(pathlib.Path('files', file), 'r', encoding = 'utf-8') as f1:
+            for line in f1.readlines():
+                f.write(line)
+with open('result.txt', 'r', encoding = 'utf-8') as f:
+    print(f"\n{f.read()}")
