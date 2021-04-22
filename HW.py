@@ -27,6 +27,24 @@ def read_recipes(filename):
             else:
                 new_dish = True
                 ingredients = False
+
+def get_shop_list_by_dishes(dishes, person_count):
+    shop_list = {}
+    for dish in dishes:
+        if dish in cook_book:
+            ingredients = cook_book[dish]
+            for ingredient in ingredients:
+                if ingredient['ingredient_name'] in shop_list:
+                    shop_list[ingredient['ingredient_name']]['quantity'] += ingredient['quantity'] * person_count
+                else:
+                    shop_list.update({ingredient['ingredient_name']: {"measure": ingredient['measure'],
+                                                                     'quantity': ingredient['quantity'] * person_count}})
+        else:
+            print(f"Блюдо {dish} отсутсвует в книге рецептов")
+    return shop_list
 cook_book = {}
 read_recipes('recipes.txt')
 print(cook_book)
+
+shop_list = get_shop_list_by_dishes(['Запеченный картофель', 'Омлет'], 2)
+print(shop_list)
