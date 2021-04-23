@@ -1,4 +1,5 @@
 import pathlib
+from pprint import pprint
 def read_recipes(filename):
     cook_book = {}
     with open(filename, 'rt', encoding = 'utf-8') as file:
@@ -46,9 +47,9 @@ def get_shop_list_by_dishes(dishes, person_count):
     return shop_list
 
 cook_book = read_recipes('recipes.txt')
-print(cook_book)
+pprint(cook_book)
 
-print(f"\n{get_shop_list_by_dishes(['Запеченный картофель', 'Омлет'], 2)}")
+pprint(get_shop_list_by_dishes(['Запеченный картофель', 'Омлет'], 2))
 
 def file_lenghs(file):
     len = 0
